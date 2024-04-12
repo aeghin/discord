@@ -9,15 +9,20 @@ export const initialProfile = async () => {
         return redirectToSignIn();
     };
 
+    // console.log(user);
+
     const profile = await db.profile.findUnique({
         where: {
             userId: user.id
         }
     });
 
+    // console.log(profile);
+
     if (profile) {
         return profile;
     };
+
 
     const newProfile = await db.profile.create({
         data: {
