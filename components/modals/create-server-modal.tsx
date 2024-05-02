@@ -44,11 +44,11 @@ const formSchema = z.object({
 
 export const CreateServerModal = () => {
 
-    const { onOpen, onClose, type } = useModal();
+    const { isOpen, onClose, type } = useModal();
 
     const router = useRouter();
 
-    const isModalOpen = onOpen && type === 'createServer';
+    const isModalOpen = isOpen && type === 'createServer';
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -66,6 +66,7 @@ export const CreateServerModal = () => {
 
             form.reset();
             router.refresh();
+            onClose();
         } catch (err) {
             console.log(err);
         }
