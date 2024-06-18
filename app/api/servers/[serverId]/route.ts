@@ -27,7 +27,7 @@ export async function PATCH(req: Request, { params }: { params: { serverId: stri
         });
 
         return NextResponse.json(server);
-
+        // console.log(server); 
 
     } catch (err) {
         console.log("[SERVER_ID", err);
