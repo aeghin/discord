@@ -38,6 +38,8 @@ export async function POST(req: Request) {
             }
         });
 
+        // console.log(server); make sure the daya is being represented correctly 
+
         return NextResponse.json(server);
 
     } catch (err) {
