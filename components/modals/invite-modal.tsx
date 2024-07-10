@@ -49,10 +49,10 @@ export const InviteModal = () => {
 
 
         } catch (err) {
-
+            console.log(err);
         } finally {
             setIsLoading(false);
-        }
+        };
     };
 
     const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
