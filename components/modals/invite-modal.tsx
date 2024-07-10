@@ -49,7 +49,11 @@ export const InviteModal = () => {
 
 
         } catch (err) {
+<<<<<<< HEAD
             console.log(err);
+=======
+           console.log("failed to patch new url", err);
+>>>>>>> e9de893e769d86eff4f1f15ca830bc1a9d8d5200
         } finally {
             setIsLoading(false);
         };
