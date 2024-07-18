@@ -25,10 +25,12 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+import { useModal } from "@/hooks/use-modal-store";
+
+
 
 
 const formSchema = z.object({
@@ -40,15 +42,13 @@ const formSchema = z.object({
     }),
 });
 
-export const InitialModal = () => {
+export const EditServerModal = () => {
 
-    const [isMounted, setIsMounted] = useState(false);
+    const { isOpen, onClose, type } = useModal();
 
     const router = useRouter();
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    const isModalOpen = isOpen && type === 'editServer';
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -66,18 +66,19 @@ export const InitialModal = () => {
 
             form.reset();
             router.refresh();
-            window.location.reload();
+            onClose();
         } catch (err) {
             console.log(err);
-        };
+        }
     };
 
-    if (!isMounted) {
-        return null
+    const handleClose = () => {
+        form.reset();
+        onClose();
     };
 
     return (
-        <Dialog open>
+        <Dialog open={isModalOpen} onOpenChange={handleClose}>
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center">
