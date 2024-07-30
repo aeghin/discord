@@ -12,16 +12,31 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Check, Copy, RefreshCw, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Check, Copy, MoreVertical, RefreshCw, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
 import axios from "axios";
 import { ServerWithMembersWithProfiles } from "@/types";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserAvatar } from "../user-avatar";
+import { useState } from "react";
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuTrigger,
+    DropdownMenuSubTrigger
+} from '@/components/ui/dropdown-menu';
 
 
 export const MembersModal = () => {
 
     const { onOpen, isOpen, onClose, type, data } = useModal();
+
+    const [loadingId, setLoadingId] = useState('');
 
     const isModalOpen = isOpen && type === 'members';
 
@@ -29,8 +44,8 @@ export const MembersModal = () => {
 
     const roleIconMap = {
         'GUEST': null,
-        'MODERATOR': <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500"/>,
-        'ADMIN': <ShieldAlert className="h-4 w-4 ml-2 text-rose-500"/>
+        'MODERATOR': <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
+        'ADMIN': <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />
     };
 
 
@@ -54,7 +69,38 @@ export const MembersModal = () => {
                                     {mem.profile.name}
                                     {roleIconMap[mem.role]}
                                 </div>
+                                <p className="text-xs text-zinc-500">
+                                    {mem.profile.email}
+                                </p>
                             </div>
+                            {server.profileId !== mem.profileId && loadingId !== mem.id && (
+                                <div className="ml-auto">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger>
+                                            <MoreVertical className="h-4 w-4 text-zinc-500" />
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent side="left">
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger className="flex items-center">
+                                                    <ShieldQuestion className="w-4 h-4 mr-2" />
+                                                    <span>Role</span>
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+                                                        <DropdownMenuItem>
+                                                            <Shield className="h-4 w-4 mr-2" />
+                                                            Guest
+                                                            {mem.role === 'GUEST' && (
+                                                                <Check className="h-4 w-4 mr-2" />
+                                                            )}
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </ScrollArea>
