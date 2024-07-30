@@ -12,12 +12,13 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Check, Copy, MoreVertical, RefreshCw, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
+import { Check, Copy, Gavel, Loader, Loader2, MoreVertical, RefreshCw, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
 import axios from "axios";
 import { ServerWithMembersWithProfiles } from "@/types";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserAvatar } from "../user-avatar";
 import { useState } from "react";
+import qs from 'query-string';
 
 import {
     DropdownMenu,
@@ -30,9 +31,13 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSubTrigger
 } from '@/components/ui/dropdown-menu';
+import { MemberRole } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 
 export const MembersModal = () => {
+
+    const router = useRouter();
 
     const { onOpen, isOpen, onClose, type, data } = useModal();
 
@@ -48,6 +53,30 @@ export const MembersModal = () => {
         'ADMIN': <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />
     };
 
+    const onRoleChange = async (memberId: string, role: MemberRole) => {
+        try {
+
+            setLoadingId(memberId);
+
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server?.id,
+                    memberId,
+                }
+            });
+
+            const response = await axios.patch(url, { role });
+
+            router.refresh();
+            onOpen('members', { server: response.data });
+
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setLoadingId('');
+        };
+    };
 
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
@@ -87,19 +116,34 @@ export const MembersModal = () => {
                                                 </DropdownMenuSubTrigger>
                                                 <DropdownMenuPortal>
                                                     <DropdownMenuSubContent>
-                                                        <DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => onRoleChange(mem.id, "GUEST")}>
                                                             <Shield className="h-4 w-4 mr-2" />
                                                             Guest
                                                             {mem.role === 'GUEST' && (
                                                                 <Check className="h-4 w-4 mr-2" />
                                                             )}
                                                         </DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => onRoleChange(mem.id, "MODERATOR")}>
+                                                            <Shield className="h-4 w-4 mr-2" />
+                                                            Moderator
+                                                            {mem.role === 'MODERATOR' && (
+                                                                <Check className="h-4 w-4 mr-2" />
+                                                            )}
+                                                        </DropdownMenuItem>
                                                     </DropdownMenuSubContent>
                                                 </DropdownMenuPortal>
                                             </DropdownMenuSub>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem>
+                                                <Gavel className="h-4 w-4 mr-2" />
+                                                Kick
+                                            </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </div>
+                            )}
+                            {loadingId === mem.id && (
+                                <Loader2 className="animate-spin text-zinc-500 ml-auto w-4 h-4" />
                             )}
                         </div>
                     ))}
