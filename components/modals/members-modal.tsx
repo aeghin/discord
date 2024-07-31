@@ -117,14 +117,14 @@ export const MembersModal = () => {
                                                             <Shield className="h-4 w-4 mr-2" />
                                                             Guest
                                                             {mem.role === 'GUEST' && (
-                                                                <Check className="h-4 w-4 ml-1" />
+                                                                <Check className="h-4 w-4 ml-1" color="#b49cf7" />
                                                             )}
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem onClick={() => onRoleChange(mem.id, "MODERATOR")}>
                                                             <Shield className="h-4 w-4 mr-2" />
                                                             Moderator
                                                             {mem.role === 'MODERATOR' && (
-                                                                <Check className="h-4 w-4 ml-1" />
+                                                                <Check className="h-4 w-4 ml-1" color="#b49cf7" />
                                                             )}
                                                         </DropdownMenuItem>
                                                     </DropdownMenuSubContent>
