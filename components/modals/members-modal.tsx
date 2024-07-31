@@ -9,10 +9,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { useModal } from "@/hooks/use-modal-store";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Check, Copy, Gavel, Loader, Loader2, MoreVertical, RefreshCw, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
+import { Check, Gavel, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
 import axios from "axios";
 import { ServerWithMembersWithProfiles } from "@/types";
 import { ScrollArea } from "../ui/scroll-area";
@@ -49,8 +46,8 @@ export const MembersModal = () => {
 
     const roleIconMap = {
         'GUEST': null,
-        'MODERATOR': <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
-        'ADMIN': <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />
+        'MODERATOR': <ShieldCheck className="h-4 w-4 ml-1 text-indigo-500" />,
+        'ADMIN': <ShieldAlert className="h-4 w-4 ml-1 text-rose-500" />
     };
 
     const onRoleChange = async (memberId: string, role: MemberRole) => {
@@ -120,14 +117,14 @@ export const MembersModal = () => {
                                                             <Shield className="h-4 w-4 mr-2" />
                                                             Guest
                                                             {mem.role === 'GUEST' && (
-                                                                <Check className="h-4 w-4 mr-2" />
+                                                                <Check className="h-4 w-4 ml-1" />
                                                             )}
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem onClick={() => onRoleChange(mem.id, "MODERATOR")}>
                                                             <Shield className="h-4 w-4 mr-2" />
                                                             Moderator
                                                             {mem.role === 'MODERATOR' && (
-                                                                <Check className="h-4 w-4 mr-2" />
+                                                                <Check className="h-4 w-4 ml-1" />
                                                             )}
                                                         </DropdownMenuItem>
                                                     </DropdownMenuSubContent>

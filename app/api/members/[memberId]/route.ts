@@ -22,7 +22,7 @@ export async function PATCH(req: Request, { params }: { params: { memberId: stri
         if (!params.memberId) {
             return new NextResponse('Member ID missing', { status: 400 });
         };
-
+        
         const server = await db.server.update({
             where: {
                 id: serverId,
