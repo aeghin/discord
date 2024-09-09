@@ -24,7 +24,7 @@ export async function POST(req: Request) {
             return new NextResponse("name cannot be 'general'", { status: 400 });
         };
 
-        const server = db.server.update({
+        const server = await db.server.update({
             where: {
                 id: serverId,
                 member: {
