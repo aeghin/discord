@@ -73,7 +73,7 @@ export const CreateChannelModal = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-
+            console.log(values);
             const url = qs.stringifyUrl({
                 url: '/api/channels',
                 query: {
