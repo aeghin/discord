@@ -22,7 +22,7 @@ export async function DELETE(req: Request, { params }: { params: { memberId: str
         };
 
 
-        const server = db.server.update({
+        const server = await db.server.update({
             where: {
                 id: serverId,
                 profileId: profile.id,
